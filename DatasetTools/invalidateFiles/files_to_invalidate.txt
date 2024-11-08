@@ -1,0 +1,2 @@
+/store/user/lrygaard/ttalps/SingleMuon/LLPminiAODv1_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1/240826_131447/0000/output_766.root
+/store/user/lrygaard/ttalps/SingleMuon/LLPminiAODv1_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1/240826_131447/0000/output_996.root
