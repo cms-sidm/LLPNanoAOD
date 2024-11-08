@@ -86,17 +86,53 @@ def parseDatasetName(dataset):
         ext = '_' + ver
     # LLPminiAOD input
     if "LLPminiAOD" in ver:
-        pattern = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)-([^_]+)-[a-f0-9]+$')
-        match = pattern.match(ver)
-        if match:
-            version = match.group(1)
-            run_information = match.group(2)
-            tag_version = match.group(3)
-            version1 = match.group(4)
-            version2 = match.group(5)
+        pattern1 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)-([^_]+)-[a-f0-9]+$')
+        pattern2 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)-[a-f0-9]+$')
+        pattern3 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)_([^_]+)-([^_]+)-[a-f0-9]+$')
+        pattern4 = re.compile(r'^([^-]+)-([^-]+)_([^_]+)_LLPminiAOD-([a-f0-9]{32})$')
+        pattern5 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)_([^_]+)-([^_]+)_([^_]+)-([^_]+)_([^_]+-[a-f0-9]{32})-([a-f0-9]{32})$')
+        match1 = pattern1.match(ver)
+        match2 = pattern2.match(ver)
+        match3 = pattern3.match(ver)
+        match4 = pattern4.match(ver)
+        match5 = pattern5.match(ver)
+        
+        if match1:
+            version = match1.group(1)
+            run_information = match1.group(2)
+            tag_version = match1.group(3)
+            version1 = match1.group(4)
+            version2 = match1.group(5)
             
             vername = '{}-{}_{}-{}'.format(run_information, tag_version, version1, version2)
-            ext = '{}-{}_{}-{}'.format(run_information, tag_version, version1, version2)
+            ext = '_{}-{}_{}-{}'.format(run_information, tag_version, version1, version2)
+        elif match2:
+            version = match2.group(1)
+            run_information = match2.group(2)
+            tag_version = match2.group(3)
+            version1 = match2.group(4)
+            
+            vername = '{}-{}_{}'.format(run_information, tag_version, version1)
+            ext = '_{}-{}_{}'.format(run_information, tag_version, version1)
+        elif match3:
+            version = match3.group(1)
+            run_information = match3.group(2)
+            gendate = match3.group(3)
+            tag_version = match3.group(4)
+            type_ = match3.group(5)
+            version1 = match3.group(6)
+            
+            vername = '{}-{}_{}_{}-{}'.format(run_information, gendate, tag_version, type_, version1)
+            ext = '_{}-{}_{}_{}-{}'.format(run_information, gendate, tag_version, type_, version1)
+        elif match4:
+            # outdated naming convensions used for 2018
+            dataset = match4.group(3)
+            year = 'Run2018'
+            vername = '{}_{}'.format(dataset, year)
+            ext = '_{}_{}'.format(dataset, year)
+        elif match5:
+            vername = '{}-{}_{}-{}'.format(match5.group(5), match5.group(6), match5.group(7), match5.group(8))
+            ext = '_{}-{}_{}-{}'.format(match5.group(5), match5.group(6), match5.group(7), match5.group(8))
         else:
             vername = "LLPminiAOD"
             ext = '_LLPminiAOD'
@@ -247,6 +283,9 @@ def createConfig(args, dataset, datasetname):
         whitelist = ast.literal_eval(args.whitelist)
         print("  --- setting site whitelist: ", whitelist)
         config.Site.whitelist = whitelist
+
+    if args.noOverflow:
+        config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
 
     if args.fnal:
         config.Data.ignoreLocality = True
@@ -683,6 +722,10 @@ def main():
     parser.add_argument('--whitelist',
                         default="",
                         help='Site whitelist. Default: %(default)'
+                        )
+    parser.add_argument('--noOverflow',
+                        action='store_true', default=False,
+                        help='Bool for not allowing overflow site distributions. If true option config.Debug.extraJDL = [+CMS_ALLOW_OVERFLOW=False] is added to config. Default: %(default)s'
                         )
     args = parser.parse_args()
 
