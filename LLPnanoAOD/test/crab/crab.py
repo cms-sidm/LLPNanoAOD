@@ -88,8 +88,10 @@ def parseDatasetName(dataset):
     if "LLPminiAOD" in ver:
         pattern1 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)-([^_]+)-[a-f0-9]+$')
         pattern2 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)-[a-f0-9]+$')
+        pattern3 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)-([^_]+)-[a-f0-9]+$')
         match1 = pattern1.match(ver)
         match2 = pattern2.match(ver)
+        match3 = pattern3.match(ver)
         if match1:
             version = match1.group(1)
             run_information = match1.group(2)
@@ -107,6 +109,14 @@ def parseDatasetName(dataset):
             
             vername = '{}-{}_{}'.format(run_information, tag_version, version1)
             ext = '{}-{}_{}'.format(run_information, tag_version, version1)
+        elif match3:
+            version = match3.group(1)
+            run_information = match3.group(2)
+            tag_version = match3.group(3)
+            version1 = match3.group(4)
+            
+            vername = '{}-{}-{}'.format(run_information, tag_version, version1)
+            ext = '{}-{}-{}'.format(run_information, tag_version, version1)
         else:
             vername = "LLPminiAOD"
             ext = '_LLPminiAOD'
