@@ -213,10 +213,14 @@ def setup_run_files(config):
 
   os.system("sed -i 's/<year>/{}/g' {}".format(config.year,condor_run_script_name))
   run3 = "2022" in config.year or "2023" in config.year
+  nanoAOD_runfile = "LLPnanoAOD_cfg.py"
   if run3:
     os.system("sed -i 's/<nanoAOD_runfile>/{}/g' {}".format("LLPnanoAOD_Run3_cfg.py",condor_run_script_name))
-  else:
-    os.system("sed -i 's/<nanoAOD_runfile>/{}/g' {}".format("LLPnanoAOD_cfg.py",condor_run_script_name))
+  if config.PAT:
+    if run3:
+      os.system("sed -i 's/<nanoAOD_runfile>/{}/g' {}".format("LLPnanoAOD_PAT_Run3_cfg.py",condor_run_script_name))
+    else:
+      os.system("sed -i 's/<nanoAOD_runfile>/{}/g' {}".format("LLPnanoAOD_PAT_cfg.py",condor_run_script_name))
   
   if config.run_mini_and_nano:
     LLPminiAOD_file = config.output_dir + "/LLPminiAODv1/" + dataset_name

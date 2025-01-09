@@ -5,8 +5,9 @@ nEvents = 2000
 filesPerJob = 1
 maxJobs = 100
 
-run_mini_and_nano = True
+run_mini_and_nano = False
 save_mini = False
+PAT = True
 
 dbs_instance = "prod/global"
 # dbs_instance = "prod/phys03"

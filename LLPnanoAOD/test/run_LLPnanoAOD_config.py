@@ -5,8 +5,9 @@ nEvents = 2000
 filesPerJob = 1
 maxJobs = 1000
 
-run_mini_and_nano = True
+run_mini_and_nano = False
 save_mini = False
+PAT = True
 
 dbs_instance = "prod/global"
 # dbs_instance = "prod/phys03"
@@ -59,19 +60,6 @@ datasets = (
   # ("data2018/SingleMuonB", "/SingleMuon/Run2018B-12Nov2019_UL2018-v3/AOD"),
   # ("data2018/SingleMuonC", "/SingleMuon/Run2018C-12Nov2019_UL2018-v3/AOD"),
   # ("data2018/SingleMuonD", "/SingleMuon/Run2018D-12Nov2019_UL2018-v8/AOD"),
-
-  # ("signals/tta_mAlp-0p35GeV_ctau-1e0mm", "/nfs/dust/cms/user/lrygaard/ttalps_cms/signals_RECO/tta_mAlp-0p35GeV_ctau-1e0mm_nEvents-100"),
-  # ("signals/tta_mAlp-0p35GeV_ctau-1e1mm", "/nfs/dust/cms/user/lrygaard/ttalps_cms/signals_RECO/tta_mAlp-0p35GeV_ctau-1e1mm_nEvents-100"),
-  # ("signals/tta_mAlp-0p35GeV_ctau-1e2mm", "/nfs/dust/cms/user/lrygaard/ttalps_cms/signals_RECO/tta_mAlp-0p35GeV_ctau-1e2mm_nEvents-100"),
-  # ("signals/tta_mAlp-0p35GeV_ctau-1e3mm", "/nfs/dust/cms/user/lrygaard/ttalps_cms/signals_RECO/tta_mAlp-0p35GeV_ctau-1e3mm_nEvents-100"),
-  # ("signals/tta_mAlp-0p35GeV_ctau-1e5mm", "/nfs/dust/cms/user/lrygaard/ttalps_cms/signals_RECO/tta_mAlp-0p35GeV_ctau-1e5mm_nEvents-1000"),
-  # ("signals/tta_mAlp-0p35GeV_ctau-1e-5mm", "/nfs/dust/cms/user/lrygaard/ttalps_cms/signals_RECO/tta_mAlp-0p35GeV_ctau-1e-5mm_nEvents-100"),
-  # ("signals/tta_mAlp-1GeV_ctau-1e0mm", "/ttalps/lrygaard-ttalps_m-1GeV_ctau-1e0mm_LLPminiAOD-c15273f0b6812ff053a850f456209388/USER"),
-  # ("signals/tta_mAlp-1GeV_ctau-1e1mm", "/ttalps/lrygaard-ttalps_m-1GeV_ctau-1e1mm_LLPminiAOD-c15273f0b6812ff053a850f456209388/USER"),
-  # ("signals/tta_mAlp-1GeV_ctau-1e2mm", "/ttalps/lrygaard-ttalps_m-1GeV_ctau-1e2mm_LLPminiAOD-c15273f0b6812ff053a850f456209388/USER"),
-  # ("signals/tta_mAlp-1GeV_ctau-1e3mm", "/ttalps/lrygaard-ttalps_m-1GeV_ctau-1e3mm_LLPminiAOD-c15273f0b6812ff053a850f456209388/USER"),
-  # ("signals/tta_mAlp-1GeV_ctau-1e5mm", "/ttalps/lrygaard-ttalps_m-1GeV_ctau-1e5mm_LLPminiAOD-c15273f0b6812ff053a850f456209388/USER"),
-  # ("signals/tta_mAlp-1GeV_ctau-1e-5mm", "/ttalps/lrygaard-ttalps_m-1GeV_ctau-1e-5mm_LLPminiAOD-c15273f0b6812ff053a850f456209388/USER"),
 
 )
 
