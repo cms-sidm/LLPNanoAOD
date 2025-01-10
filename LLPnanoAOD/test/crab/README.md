@@ -111,7 +111,7 @@ Example:
 ```
 cd $CMSSW_BASE/src/LLPNanoAOD/LLPnanoAOD/test/crab
 source /cvmfs/cms.cern.ch/common/crab-setup.sh
-./run_LLPnanoAOD_PAT_crab.sh inputs/bkg_2018_AOD.conf
+./run_LLPnanoAOD_PAT_crab.sh inputs/bkg_2022PostEE_AOD.conf
 ```
 
 The settings are the same as for `run_LLPnanoAOD_crab.sh` above, the only difference is `runFile=LLPnanoAOD_PAT_Run3_cfg.py`, which is a different config file.
