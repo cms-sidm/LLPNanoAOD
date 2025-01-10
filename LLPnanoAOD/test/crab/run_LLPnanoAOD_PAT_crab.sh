@@ -45,13 +45,14 @@ python3 $crabWorkspace/crab.py \
 --includeDSAMuon \
 --includeBS \
 --includeGenPart \
---input-DBS 'phys03' \
 --publication \
 --year $year \
 --ignore_locality \
 --whitelist "$whitelist" \
+--input_datatier "AOD" \
 --dryrun \
 # --runOnData \
 # --includeDGLMuon \
 # --set-input-dataset \
 #--send-external \
+# --input-DBS 'phys03' \

@@ -70,9 +70,10 @@ def parseDatasetName(dataset):
         ver_pieces = ver.split('_')
         keep_idx = 1
         for idx, s in enumerate(ver_pieces):
-            if s.startswith('mc'):
-                keep_idx = idx
-                break
+            keep_idx = idx
+            # if s.startswith('mc'):
+                # keep_idx = idx
+                # break
         rlt = re.search(r'_(v[0-9]+)(_ext[0-9]+|)(_L1v[0-9]+|)(-v[0-9]+)', ver).groups()
         ext = rlt[1].replace('_', '-') + rlt[-1]
         vername = '_'.join(ver_pieces[:keep_idx]) + '_' + rlt[0] + ext
@@ -99,8 +100,10 @@ def parseDatasetName(dataset):
             version1 = match1.group(4)
             version2 = match1.group(5)
             
-            vername = '{}-{}_{}-{}'.format(run_information, tag_version, version1, version2)
-            ext = '{}-{}_{}-{}'.format(run_information, tag_version, version1, version2)
+            # vername = '{}-{}_{}-{}'.format(run_information, tag_version, version1, version2)
+            # ext = '{}-{}_{}-{}'.format(run_information, tag_version, version1, version2)
+            vername = '{}-{}_postEE_{}-{}'.format(run_information, tag_version, version1, version2)
+            ext = '{}-{}_postEE_{}-{}'.format(run_information, tag_version, version1, version2)
         elif match2:
             version = match2.group(1)
             run_information = match2.group(2)
@@ -706,6 +709,10 @@ def main():
                         default="",
                         help='Site whitelist. Default: %(default)'
                         )
+    parser.add_argument('--input_datatier',
+                        default="",
+                        help='Data tier of the input, e.g. AOD or MINIAOD. Default: %(default)'
+                        )
     args = parser.parse_args()
 
     if args.summary:
@@ -737,6 +744,8 @@ def main():
         input_datatier = '/MINIAOD'
     if(args.input_DBS == 'phys03'):
         input_datatier = '/USER'
+    if(args.input_datatier != ""):
+        input_datatier = args.input_datatier
     with open(args.inputfile) as inputfile:
         for l in inputfile:
             l = l.strip()
