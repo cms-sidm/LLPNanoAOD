@@ -29,6 +29,12 @@ These are the main files:
 
 You also need to create `log`, `error`, `output` directories for the condor jobs.
 
+At least on DESY sites we observed failed jobs due to the site connection. Therefore, it's possible to check the number of valid/invalid files in the dataset and compare it to number of files stored on pnfs:
+```
+python3 check_file_status_of_dataset.py
+```
+Just specify the dataset and the path to the pnfs storage in `check_file_status_of_dataset.py`. If there are more valid files compared to number of files on pnfs these missing (valid) files will be saved in the output named `overflow_files_[datasetname]`.
+
 ## Get overlapping files
 In the [invalidateFiles folder](invalidateFiles/) there is also a script to get overlapping files in /pnfs/ for a dataset.
 
