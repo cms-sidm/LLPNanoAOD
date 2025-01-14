@@ -1,16 +1,17 @@
 import os
 
 #####   SETTINGS   #####
-dataset="/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/lrygaard-LLPnanoAODv1_Run3Summer22EEDRPremix-124X_postEE_v1-v2-00000000000000000000000000000000/USER"
+dataset="/SingleMuon/lrygaard-LLPminiAODv1_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1-4d5adf68ed2927ce6cdc8fbe20819cac/USER"
 
 base_pnfs_path="/pnfs/desy.de/cms/tier2/store/user/lrygaard/ttalps/"
+user_store_path="/store/user/lrygaard/ttalps/"
 ## dataset_dir can be set to ""
 # dataset_dir=""
-dataset_dir="DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/LLPnanoAODv1_Run3Summer22EEDRPremix-124X_postEE_v1-v2"
+dataset_dir="SingleMuon/LLPminiAODv1_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1"
 
 ## input_list_of_files_to_invalidate can be set to ""
 # input_list_of_files_to_invalidate=""
-input_list_of_files_to_invalidate="DYJetsToLL_M-50_2022_LLPnano.txt"
+input_list_of_files_to_invalidate="overlapping_files_to_invalidate_2016B.txt"
 
 instance="prod/phys03"
 
@@ -31,13 +32,13 @@ def get_invalid_files(dataset, instance):
 def get_pnfs_files(base_pnfs_path, dataset_dir):
     pnfs_files = []
     for subdir in os.listdir(base_pnfs_path+dataset_dir):
-        path = base_pnfs_path+dataset_dir+"/"+subdir
         for i in range(20):
-            if os.path.exists(path+"/000"+str(i)):
-                command = "ls "+path+"/000"+str(i)
+            path = base_pnfs_path+dataset_dir+"/"+subdir+"/000"+str(i)
+            if os.path.exists(path):
+                command = "ls "+path
                 files = os.popen(command).read().split("\n")
-                # check that no line is empty
-                files = [file for file in files if file]
+                store_path = user_store_path+dataset_dir+"/"+subdir+"/000"+str(i)+"/"
+                files = [store_path+file for file in files if file]
                 for file in files:
                     pnfs_files.append(file)
     return pnfs_files
