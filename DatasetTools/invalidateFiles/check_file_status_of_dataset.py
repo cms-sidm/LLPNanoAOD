@@ -1,16 +1,16 @@
 import os
 
 #####   SETTINGS   #####
-dataset="/TTZZ_TuneCP5_13p6TeV_madgraph-madspin-pythia8/lrygaard-LLPminiAODv1_Run3Summer22DRPremix-124X_v12-v2-c28c1b325b38cb5d3a9606ae5448d377/USER"
+dataset="/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/lrygaard-LLPnanoAODv1_Run3Summer22EEDRPremix-124X_postEE_v1-v2-00000000000000000000000000000000/USER"
 
 base_pnfs_path="/pnfs/desy.de/cms/tier2/store/user/lrygaard/ttalps/"
 ## dataset_dir can be set to ""
 # dataset_dir=""
-dataset_dir="TTZZ_TuneCP5_13p6TeV_madgraph-madspin-pythia8/LLPminiAODv1_Run3Summer22DRPremix-124X_v12-v2/241106_090035"
+dataset_dir="DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/LLPnanoAODv1_Run3Summer22EEDRPremix-124X_postEE_v1-v2"
 
 ## input_list_of_files_to_invalidate can be set to ""
 # input_list_of_files_to_invalidate=""
-input_list_of_files_to_invalidate="TTZZ_2022PostEE_LLPminifail.txt"
+input_list_of_files_to_invalidate="DYJetsToLL_M-50_2022_LLPnano.txt"
 
 instance="prod/phys03"
 
@@ -36,6 +36,8 @@ def get_pnfs_files(base_pnfs_path, dataset_dir):
             if os.path.exists(path+"/000"+str(i)):
                 command = "ls "+path+"/000"+str(i)
                 files = os.popen(command).read().split("\n")
+                # check that no line is empty
+                files = [file for file in files if file]
                 for file in files:
                     pnfs_files.append(file)
     return pnfs_files
