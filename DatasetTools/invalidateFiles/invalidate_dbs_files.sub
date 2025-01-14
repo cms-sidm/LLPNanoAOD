@@ -1,5 +1,5 @@
 Universe              = vanilla
-executable            = invalidate_dbs_files.sh
+executable            = invalidate_dbs_files_TTHto2B_2022_LLPmini.sh
 arguments             = $(ProcId) 30
 GetEnv                = True
 +Remote_Schedd = "bird-htc-sched11.desy.de"
@@ -7,7 +7,7 @@ output                = output/$(ClusterId).$(ProcId).out
 error                 = error/$(ClusterId).$(ProcId).err
 log                   = log/$(ClusterId).log
 requirements 	        = (OpSysAndVer == "CentOS7" || OpSysAndVer == "RedHat9")
-# request_memory        = 4 GB
+request_memory        = 2 GB
 +JobFlavour           = "workday"
 
-queue 260
+queue 6
