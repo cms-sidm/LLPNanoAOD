@@ -33,7 +33,11 @@ At least on DESY sites we observed failed jobs due to the site connection. There
 ```
 python3 check_file_status_of_dataset.py
 ```
-Just specify the dataset and the path to the pnfs storage in `check_file_status_of_dataset.py`. If there are more valid files compared to number of files on pnfs these missing (valid) files will be saved in the output named `overflow_files_[datasetname]`.
+Specify under settings in `check_file_status_of_dataset.py`:
+* dataset 
+* path to pnfs storage (optional - set to "" if you don't need it)
+* input .txt-file with files that should be invalidated
+If there are more valid files compared to number of files on pnfs or files that should be invalidated that are still valid - these (incorrectly) valid files will be saved in the output named `overflow_files_[datasetname]`.
 
 ## Get overlapping files
 In the [invalidateFiles folder](invalidateFiles/) there is also a script to get overlapping files in /pnfs/ for a dataset.

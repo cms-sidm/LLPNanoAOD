@@ -1,68 +1,103 @@
 import os
 
-dataset="/TTHto2B_M-125_TuneCP5_13p6TeV_powheg-pythia8/lrygaard-LLPminiAODv1_Run3Summer22EEDRPremix-124X_v1-v3-c28c1b325b38cb5d3a9606ae5448d377/USER"
+#####   SETTINGS   #####
+dataset="/TTZZ_TuneCP5_13p6TeV_madgraph-madspin-pythia8/lrygaard-LLPminiAODv1_Run3Summer22DRPremix-124X_v12-v2-c28c1b325b38cb5d3a9606ae5448d377/USER"
 
 base_pnfs_path="/pnfs/desy.de/cms/tier2/store/user/lrygaard/ttalps/"
-dataset_dir="TTHto2B_M-125_TuneCP5_13p6TeV_powheg-pythia8/LLPminiAODv1_Run3Summer22EEDRPremix-124X_v1-v3"
+## dataset_dir can be set to ""
+# dataset_dir=""
+dataset_dir="TTZZ_TuneCP5_13p6TeV_madgraph-madspin-pythia8/LLPminiAODv1_Run3Summer22DRPremix-124X_v12-v2/241106_090035"
+
+## input_list_of_files_to_invalidate can be set to ""
+# input_list_of_files_to_invalidate=""
+input_list_of_files_to_invalidate="TTZZ_2022PostEE_LLPminifail.txt"
 
 instance="prod/phys03"
 
-# valid files
-command = "dasgoclient -query='file dataset="+dataset+" instance="+instance+" status=valid' | wc -l"
-valid_files = int(os.popen(command).read())
-print("Number of valid files: ", valid_files)
-
-# invalid files
-command = "dasgoclient -query='file dataset="+dataset+" instance="+instance+" status=invalid' | wc -l"
-invalid_files = int(os.popen(command).read())
-print("Number of invalid files: ", invalid_files)
-
-# number of files on pnfs
-tot_num_files = 0
-if os.path.exists(base_pnfs_path+dataset_dir):
-    for subdir in os.listdir(base_pnfs_path+dataset_dir):
-        path = base_pnfs_path+dataset_dir+"/"+subdir
-        print("Checking ", path)
-        for i in range(20):
-            if os.path.exists(path+"/000"+str(i)):
-                command = "ls "+path+"/000"+str(i)+" | wc -l"
-                num_files = int(os.popen(command).read())
-                tot_num_files += num_files
-else:
-    print("Path does not exist: ", base_pnfs_path+dataset_dir)
-
-print("Number of files on pnfs: ", tot_num_files)
-
-if tot_num_files == valid_files:
-    print("All valid files are correctly stored on pnfs.")
-
-if valid_files > tot_num_files:
-    print("There are more valid files than files on pnfs.")
-    # find the overflow files that should be invalid:
+def get_valid_files(dataset, instance):
     command = "dasgoclient -query='file dataset="+dataset+" instance="+instance+" status=valid'"
     valid_files = os.popen(command).read().split("\n")
+    # check that no line is empty
+    valid_files = [file for file in valid_files if file]
+    return valid_files
 
-    # get files on pnfs
+def get_invalid_files(dataset, instance):
+    command = "dasgoclient -query='file dataset="+dataset+" instance="+instance+" status=invalid'"
+    invalid_files = os.popen(command).read().split("\n")
+    # check that no line is empty
+    invalid_files = [file for file in invalid_files if file]
+    return invalid_files
+
+def get_pnfs_files(base_pnfs_path, dataset_dir):
     pnfs_files = []
-    if os.path.exists(base_pnfs_path+dataset_dir):
-        for subdir in os.listdir(base_pnfs_path+dataset_dir):
-            path = base_pnfs_path+dataset_dir+"/"+subdir
-            for i in range(20):
-                if os.path.exists(path+"/000"+str(i)):
-                    command = "ls "+path+"/000"+str(i)
-                    files = os.popen(command).read().split("\n")
-                    for file in files:
-                        pnfs_files.append(file)
+    for subdir in os.listdir(base_pnfs_path+dataset_dir):
+        path = base_pnfs_path+dataset_dir+"/"+subdir
+        for i in range(20):
+            if os.path.exists(path+"/000"+str(i)):
+                command = "ls "+path+"/000"+str(i)
+                files = os.popen(command).read().split("\n")
+                for file in files:
+                    pnfs_files.append(file)
+    return pnfs_files
 
-    # find the overflow files
-    overflow_files = []
-    for file in valid_files:
-        if file not in pnfs_files:
-            overflow_files.append(file)
-    
-    print("Number of overflow files: ", len(overflow_files))
-    dataset_dir_str = dataset_dir.replace("/", "_")
-    output_file = "overflow_files_"+dataset_dir_str+".txt"
+def get_files_to_invalidate(input_list_of_files_to_invalidate):
+    files_to_invalidate = []
+    with open(input_list_of_files_to_invalidate, 'r') as f:
+        for line in f:
+            files_to_invalidate.append(line.strip())
+    return files_to_invalidate
+
+#####   VALID FILES   #####
+valid_files = get_valid_files(dataset, instance)
+n_valid_files = len(valid_files)
+print("Number of valid files: ", n_valid_files)
+
+#####   INVALID FILES   #####
+invalid_files = get_invalid_files(dataset, instance)
+n_invalid_files = len(invalid_files)
+print("Number of invalid files: ", n_invalid_files)
+
+#####   PNFS FILES   #####
+n_pnfs_files = 0
+pnfs_files = []
+if dataset_dir != "":
+    if os.path.exists(base_pnfs_path+dataset_dir):
+        pnfs_files = get_pnfs_files(base_pnfs_path, dataset_dir)
+        n_pnfs_files = len(pnfs_files)
+    else:
+        print("Path does not exist: ", base_pnfs_path+dataset_dir)
+print("Number of files on pnfs: ", n_pnfs_files)
+
+#####   FILES TO INVALIDATE   #####
+num_files_to_invalidate = 0
+if input_list_of_files_to_invalidate != "":
+    files_to_invalidate = get_files_to_invalidate(input_list_of_files_to_invalidate)
+    num_files_to_invalidate = len(files_to_invalidate)
+print("Number of files to invalidate: ", num_files_to_invalidate)
+
+if n_pnfs_files == n_valid_files:
+    print("All valid files are correctly stored on pnfs.")
+
+overflow_files = []
+#####   CASE 1: MORE VALID FILES THAN FILES ON PNFS   #####
+if dataset_dir != "":
+    if n_valid_files > n_pnfs_files:
+        print("There are more valid files than files on pnfs.")        
+        for file in valid_files:
+            if file not in pnfs_files:
+                overflow_files.append(file)
+
+#####   CASE 2: FILES THAT SHOULD BE INVALIDATED ARE STILL VALID   #####
+if input_list_of_files_to_invalidate != "":
+    for file in files_to_invalidate:
+        if file in valid_files:
+            if file not in overflow_files:
+                overflow_files.append(file)
+
+print("Number of overflow files: ", len(overflow_files))
+if len(overflow_files) > 0:
+    dataset_str = dataset.replace("/", "_")
+    output_file = "overflow_files_"+dataset_str+".txt"
     with open(output_file, 'w') as f:
         for file in overflow_files:
             f.write(file+"\n")
