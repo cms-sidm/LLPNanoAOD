@@ -23,7 +23,9 @@ These are the main files:
 * [invalidate_dbs_files.sh](invalidateFiles/invalidate_dbs_files.sh) - bash script for condor. You need to CHECK:
     * `file_with_paths_to_invalidate` = name of your .txt file with a list of all files to invalidate
 * [invalidate_dbs_files.sub](invalidateFiles/invalidate_dbs_files.sub) - conodor submission script. You need to CHECK:
-    * `queue` = number of files in your `file_with_paths_to_invalidate` input
+    * the second value in `arguments` is the number of files to read per job = `n_files_to_read` in `invalidate_dbs_files.sh`
+    * `queue` = number of jobs to run
+    * Note `n_files_to_read` times `queue` should be equal to number of lines in your input .txt file with a list of all files to invalidate. For example for an input with 100 files: if `n_files_to_read` = 2 then `queue` = 100/2 = 50
 
 You also need to create `log`, `error`, `output` directories for the condor jobs.
 
