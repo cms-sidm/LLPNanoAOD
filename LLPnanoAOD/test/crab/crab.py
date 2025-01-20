@@ -233,8 +233,10 @@ def createConfig(args, dataset, datasetname):
         config.Data.totalUnits = args.max_units
     if args.splitting == 'FileBased':
         totalFiles = getTotalNumberOfFiles(args, dataset)
+        print(f"\n\nTotal number of files: {totalFiles}\n\n")
         if args.units_per_job == 0:
             nFiles = getSmallestNFiles(totalFiles)
+            print(f"\n\nSetting n files to: {nFiles}\n\n")
             config.Data.unitsPerJob = nFiles
             print("Automatically set number of files per job to %d" % nFiles)
         elif totalFiles / args.units_per_job > 10000:
