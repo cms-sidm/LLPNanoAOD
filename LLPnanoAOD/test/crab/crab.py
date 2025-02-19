@@ -247,7 +247,7 @@ def createConfig(args, dataset, datasetname):
     print("  --- year: ", args.year)
     print("  --- output dataset tag: ", args.tag + '_' + vername)
     config.Data.outputDatasetTag = args.tag + '_' + vername
-    config.Data.allowNonValidInputDataset = True
+    config.Data.allowNonValidInputDataset = False
     config.Data.outLFNDirBase = args.outputdir
     if args.ignore_locality:
         config.Data.ignoreLocality = True 
@@ -259,8 +259,8 @@ def createConfig(args, dataset, datasetname):
         config.Data.publication = False
         config.General.workArea = args.work_area + '_test'
 
-    # if not isMC and args.json:
-    #     config.Data.lumiMask = args.json
+    if not isMC and args.lumiMask != '':
+        config.Data.lumiMask = args.lumiMask
 
     config.Site.storageSite = args.site
 
@@ -573,8 +573,8 @@ def main():
                         default='LLPnanoAOD',
                         help='Output dataset tag. Default: %(default)s'
                         )
-    parser.add_argument('-j', '--json',
-                        default='https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt',
+    parser.add_argument('--lumiMask',
+                        default='',
                         help='JSON file for lumi mask. Default: %(default)s'
                         )
     parser.add_argument('--site',
