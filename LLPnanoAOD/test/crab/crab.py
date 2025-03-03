@@ -91,11 +91,15 @@ def parseDatasetName(dataset):
         pattern3 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)_([^_]+)-([^_]+)-[a-f0-9]+$')
         pattern4 = re.compile(r'^([^-]+)-([^-]+)_([^_]+)_LLPminiAOD-([a-f0-9]{32})$')
         pattern5 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)_([^_]+)-([^_]+)_([^_]+)-([^_]+)_([^_]+-[a-f0-9]{32})-([a-f0-9]{32})$')
+        pattern6 = re.compile(r'^[^-]+-LLPminiAODv(\d+)_([^_]+)-([^_]+)_([^_]+)_([^_]+)_([^_]+)-([^_]+)-([a-f0-9]{32})$')
+        pattern7 = re.compile(r'^[^-]+-LLPminiAODv(\d+)-([^_]+)_([^_]+)-([^_]+)_([^_]+)-([^_]+)-[a-f0-9]+$')
         match1 = pattern1.match(ver)
         match2 = pattern2.match(ver)
         match3 = pattern3.match(ver)
         match4 = pattern4.match(ver)
         match5 = pattern5.match(ver)
+        match6 = pattern6.match(ver)
+        match7 = pattern7.match(ver)
         
         if match1:
             version = match1.group(1)
@@ -133,6 +137,18 @@ def parseDatasetName(dataset):
         elif match5:
             vername = '{}-{}_{}-{}'.format(match5.group(5), match5.group(6), match5.group(7), match5.group(8))
             ext = '_{}-{}_{}-{}'.format(match5.group(5), match5.group(6), match5.group(7), match5.group(8))
+        elif match6:
+            vername = '{}-{}_{}_{}-{}_{}'.format(match6.group(2), match6.group(3), match6.group(4), match6.group(5), match6.group(6), match6.group(7))
+            ext = '_{}-{}_{}_{}-{}_{}'.format(match6.group(2), match6.group(3), match6.group(4), match6.group(5), match6.group(6), match6.group(7))
+        elif match7:
+            version = match7.group(1)
+            run_information = match7.group(3)
+            tag_version = match7.group(4)
+            version1 = match7.group(5)
+            version2 = match7.group(6)
+            
+            vername = '{}-{}_{}-{}'.format(run_information, tag_version, version1, version2)
+            ext = '_{}-{}_{}-{}'.format(run_information, tag_version, version1, version2)
         else:
             vername = "LLPminiAOD"
             ext = '_LLPminiAOD'
@@ -258,7 +274,7 @@ def createConfig(args, dataset, datasetname):
     print("  --- PLEASE DOUBLE CHECK: ")
     print("  --- output dataset tag: ", args.tag + '_' + vername)
     config.Data.outputDatasetTag = args.tag + '_' + vername
-    config.Data.allowNonValidInputDataset = True
+    config.Data.allowNonValidInputDataset = False
     config.Data.outLFNDirBase = args.outputdir
     if args.ignore_locality:
         config.Data.ignoreLocality = True 
@@ -270,8 +286,9 @@ def createConfig(args, dataset, datasetname):
         config.Data.publication = False
         config.General.workArea = args.work_area + '_test'
 
-    # if not isMC and args.json:
-    #     config.Data.lumiMask = args.json
+    if not isMC and args.json != "":
+        print("  --- setting lumi mask: ", args.json)
+        config.Data.lumiMask = args.json
 
     config.Site.storageSite = args.site
 
@@ -588,7 +605,7 @@ def main():
                         help='Output dataset tag. Default: %(default)s'
                         )
     parser.add_argument('-j', '--json',
-                        default='https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt',
+                        default='',
                         help='JSON file for lumi mask. Default: %(default)s'
                         )
     parser.add_argument('--site',
