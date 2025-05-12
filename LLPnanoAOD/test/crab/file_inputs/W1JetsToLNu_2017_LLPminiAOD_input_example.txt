@@ -1,0 +1,1 @@
+root://dcache-cms-xrootd.desy.de/pnfs/desy.de/cms/tier2/store/user/lrygaard/ttalps/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/LLPminiAODv1_RunIISummer20UL17RECO-106X_v6-v1/250429_125004/0000/output_9.root
