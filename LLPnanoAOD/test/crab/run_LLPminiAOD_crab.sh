@@ -19,7 +19,7 @@ runFile=LLPminiAOD_cfg.py
 source /cvmfs/cms.cern.ch/common/crab-setup.sh
 
 nCores=8
-maxMemory=$((1000 * $nCores))
+maxMemory=$((500 * $nCores))
 maxRuntime=3500
 # Setup for FileBased splitting, 0 to automatically set lowest number of files per job for max total 10000 jobs
 filePerJob=0
@@ -46,7 +46,7 @@ python $crabWorkspace/crab.py \
 --work-area $crabWorkspace/crab_projects/crab_${filename}_v$VERSION \
 --publication \
 --year $year \
---dryrun \
+# --dryrun \
 # --ignore_locality \
 # --whitelist "$whitelist" \
 # --runOnData \
