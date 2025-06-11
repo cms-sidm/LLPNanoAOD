@@ -19,7 +19,7 @@ runFile=LLPnanoAOD_cfg.py
 source /cvmfs/cms.cern.ch/common/crab-setup.sh
 
 nCores=8
-maxMemory=$((1000 * $nCores))
+maxMemory=$((500 * $nCores))
 maxRuntime=2750
 filePerJob=0
 VERSION=1
