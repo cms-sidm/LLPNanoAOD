@@ -1,17 +1,18 @@
 import os
 
 #####   SETTINGS   #####
-dataset="/SingleMuon/lrygaard-LLPminiAODv1_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1-4d5adf68ed2927ce6cdc8fbe20819cac/USER"
+
+dataset="/SingleMuon/lrygaard-LLPminiAODv1_Run2017E-09Aug2019_UL2017-v1-bd7ae54c8e86ee21fea83cba264cd4d4/USER"
 
 base_pnfs_path="/pnfs/desy.de/cms/tier2/store/user/lrygaard/ttalps/"
 user_store_path="/store/user/lrygaard/ttalps/"
 ## dataset_dir can be set to ""
 # dataset_dir=""
-dataset_dir="SingleMuon/LLPminiAODv1_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1"
+dataset_dir="SingleMuon/LLPminiAODv1_Run2017E-09Aug2019_UL2017-v1"
 
 ## input_list_of_files_to_invalidate can be set to ""
-# input_list_of_files_to_invalidate=""
-input_list_of_files_to_invalidate="overlapping_files_to_invalidate_2016B.txt"
+input_list_of_files_to_invalidate=""
+# input_list_of_files_to_invalidate="overflow_files__Muon_lrygaard-LLPnanoAODv1_Run2022D-27Jun2023-v2-00000000000000000000000000000000_USER.txt"
 
 instance="prod/phys03"
 
@@ -85,7 +86,7 @@ overflow_files = []
 #####   CASE 1: MORE VALID FILES THAN FILES ON PNFS   #####
 if dataset_dir != "":
     if n_valid_files > n_pnfs_files:
-        print("There are more valid files than files on pnfs.")        
+        print("There are more valid files than files on pnfs.")
         for file in valid_files:
             if file not in pnfs_files:
                 overflow_files.append(file)
@@ -96,6 +97,16 @@ if input_list_of_files_to_invalidate != "":
         if file in valid_files:
             if file not in overflow_files:
                 overflow_files.append(file)
+
+#####   CASE 3: FILES ON PNFS ARE INVALID?   #####
+if dataset_dir != "":
+    if n_valid_files < n_pnfs_files:
+        print("There are more files on pnfs than valid files.")
+        print("Files only on pnfs: ")
+        for file in pnfs_files:
+            if file not in valid_files:
+                # overflow_files.append(file)
+                print(file)
 
 print("Number of overflow files: ", len(overflow_files))
 if len(overflow_files) > 0:

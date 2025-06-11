@@ -28,7 +28,13 @@ whitelist="['T2_CH_*','T2_IT_*','T2_US_*','T2_FR_*','T2_DE_*','T2_ES_*','T2_UK_*
 
 # Year options for MC: 2016, 2016PreVFP, 2017, 2018, 2022PreEE, 2022PostEE, 2023PreBPix, 2023PostBPix
 # Year options for data: 2016HIPM, 2016 (no HIPM), 2017, 2018, 2022ReReco, 2022Prompt, 2023
-year=2018
+year=2017
+
+# json='https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt'
+# json='https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt'
+# json='https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt'
+# json='https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions22/Cert_Collisions2022_355100_362760_Golden.json'
+# json='https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions23/Cert_Collisions2023_366442_370790_Golden.json'
 
 python $crabWorkspace/crab.py \
 -p $configWorkspace/$runFile \
@@ -51,6 +57,7 @@ python $crabWorkspace/crab.py \
 --ignore_locality \
 --whitelist "$whitelist" \
 --dryrun \
+# --json "$json" \
 # --runOnData \
 # --includeDGLMuon \
 # --set-input-dataset \

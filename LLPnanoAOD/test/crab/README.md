@@ -9,7 +9,7 @@ Main functionalities of the crab submission and creation of crab configs are don
 https://github.com/SohamBhattacharya/DNNTuples/blob/dca9f695499aa9e56932cac073e7bca2536c6deb/Ntupler/run/crab.py
 
 ### Run scripts ###
-To run the script use the help bash scripts `run_LLPminiAOD_crab.sh` and `run_LLPnanoAOD_crab.sh`.
+To run the script use the help bash scripts `run_LLPminiAOD_crab.sh`, `run_LLPnanoAOD_crab.sh` and `run_LLPnanoAOD_PAT_crab.sh`.
 
 ### Input files ###
 Input files are stored in `inputs` as `.conf`-files. The already given example input files are named as `filetype_year_datatier.conf`.
@@ -102,6 +102,20 @@ Make sure to update the settings in `run_LLPnanoAOD_crab.sh`:
 - `--input-DBS`: input dbs instance, default is 'global'
 - `--test`: to test run on a small file - see run tests section
 - `--dry-run`: for dry run
+
+
+## Run LLPnanoAOD + PAT ##
+This means to run LLPnanoAOD production with PAT settings directly from AOD, thus excluding miniAOD production. 
+
+Run LLPnanoAOD + PAT crab submission with `run_LLPnanoAOD_PAT_crab.sh` with an input file as argument:
+Example:
+```
+cd $CMSSW_BASE/src/LLPNanoAOD/LLPnanoAOD/test/crab
+source /cvmfs/cms.cern.ch/common/crab-setup.sh
+./run_LLPnanoAOD_PAT_crab.sh inputs/bkg_2018_AOD.conf
+```
+
+The settings are the same as for `run_LLPnanoAOD_crab.sh` above, the only difference is `runFile=LLPnanoAOD_PAT_Run3_cfg.py`, which is a different config file.
 
 ## Run test ##
 If `--test` parameter is given it will only do a test run with 1 job with 1 file running over 10 events. Furthermore:
