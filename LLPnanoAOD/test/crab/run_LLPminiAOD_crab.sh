@@ -20,13 +20,13 @@ source /cvmfs/cms.cern.ch/common/crab-setup.sh
 
 nCores=8
 maxMemory=$((1000 * $nCores))
-maxRuntime=3500
+maxRuntime=2750
 # Setup for FileBased splitting, 0 to automatically set lowest number of files per job for max total 10000 jobs
 filePerJob=0
 # LLPminiAOD version
 VERSION=1
 
-whitelist="['T2_US_*', 'T2_US_*', 'T2_CH_*', 'T2_IT_*', 'T1_IT_*']"
+whitelist="['T2_DE_*', 'T2_CH_*', 'T2_IT_*', 'T1_IT_*']"
 
 # Year options for MC: 2016, 2016PreVFP, 2017, 2018, 2022PreEE, 2022PostEE, 2023PreBPix, 2023PostBPix
 # Year options for data: 2016HIPM, 2016 (no HIPM), 2017, 2018, 2022ReReco, 2022Prompt, 2023
@@ -44,11 +44,12 @@ python $crabWorkspace/crab.py \
 --max-memory $maxMemory \
 --max-runtime-min $maxRuntime \
 --work-area $crabWorkspace/crab_projects/crab_${filename}_v$VERSION \
---publication \
 --year $year \
+--ignore_locality \
+--whitelist "$whitelist" \
 --dryrun \
-# --ignore_locality \
-# --whitelist "$whitelist" \
+# --partial_dataset \
+# --publication \
 # --runOnData \
 # --test \
 # --input-DBS 'phys03' \

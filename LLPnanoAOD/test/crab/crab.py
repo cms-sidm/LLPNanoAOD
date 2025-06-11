@@ -278,6 +278,8 @@ def createConfig(args, dataset, datasetname):
     config.Data.outLFNDirBase = args.outputdir
     if args.ignore_locality:
         config.Data.ignoreLocality = True 
+    if args.partial_dataset:
+        config.Data.partialDataset=True
 
     if args.test:
         config.Data.unitsPerJob = 1
@@ -743,6 +745,10 @@ def main():
     parser.add_argument('--noOverflow',
                         action='store_true', default=False,
                         help='Bool for not allowing overflow site distributions. If true option config.Debug.extraJDL = [+CMS_ALLOW_OVERFLOW=False] is added to config. Default: %(default)s'
+                        )
+    parser.add_argument('--partial_dataset',
+                        action='store_true', default=False,
+                        help='Bool to include config setting config.Data.partialDataser = True. Default: %(default)s'
                         )
     args = parser.parse_args()
 
